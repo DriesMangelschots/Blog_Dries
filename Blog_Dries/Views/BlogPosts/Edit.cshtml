@@ -1,0 +1,113 @@
+﻿@model Blog_Dries.Interfaces.CreatePostInterface
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="row">
+    <div class="col-md-12" style="border-radius: 12px; background-color: #e9ecef;">
+        <h1>Edit</h1>
+
+        <h4>Blog Post</h4>
+        <hr />
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="Title" class="control-label"></label>
+                        <input asp-for="Title" class="form-control" placeholder="Title" required />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="Category_Id" class="control-label">Category</label>
+                        <select asp-for="Category_Id" class="form-control" asp-items="ViewBag.Category_Id" required>
+                            <option value="">Select Category</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">
+                            Photo
+                        </label>
+                        <small style="float:right;" id="emailHelp" class="form-text text-muted">* You can only choose 1 Image</small>
+                        <input type="file" class="form-control" value="" id="ImageRender" />
+                        <input asp-for="PostImage" style="display:none;" type="text" class="form-control" id="ImageRender1" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Descritption" class="control-label"></label>
+                <textarea asp-for="Descritption" class="form-control" rows="6" placeholder="Please Enter Description of Post here..." required></textarea>
+                <span asp-validation-for="Descritption" class="text-danger"></span>
+            </div>
+            @if (User.IsInRole("Admin"))
+            {
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="Datetime" class="control-label"></label>
+                            <input asp-for="Datetime" class="form-control" required />
+                            <span asp-validation-for="Datetime" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="Author" class="control-label"></label>
+                            <input asp-for="Author" class="form-control" required />
+                            <span asp-validation-for="Author" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="Username" class="control-label"></label>
+                            <input asp-for="Username" class="form-control" required />
+                            <span asp-validation-for="Username" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <div class="form-group">
+                <input type="submit" value="Save Post" class="btn btn-success btn-block" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+<script>
+    $("#ImageRender").on('change', function () {
+        readURL(this);
+    });
+
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var size = input.files[0].size;
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                if (size <= 1048576) {
+                    $("#ImageRender1").val(e.target.result);
+                }
+                else {
+                    alert("Image size should be less than 1 MB!\notherwise your image will not be uploaded.");
+                    $("#ImageRender1").val("");
+                }
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>

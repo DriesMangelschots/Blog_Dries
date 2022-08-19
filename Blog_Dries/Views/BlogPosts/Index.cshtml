@@ -1,0 +1,90 @@
+﻿@model IEnumerable<Blog_Dries.Models.BlogPost>
+
+@{
+    ViewData["Title"] = "Posts";
+}
+
+@if (User.IsInRole("Admin"))
+{
+
+    <p style="float:right;">
+        <a class="btn btn-primary" asp-action="Create">Create New Post</a>
+    </p>
+    <h1>All Posts</h1>
+}
+else
+{
+
+    <p style="float:right;">
+        <a class="btn btn-primary" asp-action="Create">Create New Post</a>
+    </p>
+    <h1>Your Posts</h1>
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Descritption)
+            </th>
+            <th>
+                Category
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Datetime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Author)
+            </th>
+            <th>
+                User
+            </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @if (item.Descritption.Length > 75)
+                    {
+                        <span title="Full Description: @item.Descritption">@item.Descritption.Substring(0, 75).ToString()...</span>
+                    }
+                    else
+                    {
+                        <span>@item.Descritption</span>
+                    }
+                </td>
+                <td style="color:white;">
+                    <span class="badge rounded-pill bg-secondary">
+                        •@Html.DisplayFor(modelItem => item.Categoryid.CategoryName)
+                    </span>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Datetime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Author)
+                </td>
+                <td>
+                    @item.Username.Split(" ")[0]
+                </td>
+                <td>
+                    <a class="btn btn-sm btn-outline-info" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    <a class="btn btn-sm btn-outline-dark" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a class="btn btn-sm btn-outline-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

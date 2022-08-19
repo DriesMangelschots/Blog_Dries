@@ -1,0 +1,94 @@
+﻿@model List<Blog_Dries.Interfaces.CreatePostInterface>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+<style>
+    small:hover {
+        background-color: yellow;
+        cursor: pointer;
+        transition: background-color 1s ease !important;
+    }
+
+    img:hover {
+    }
+</style>
+
+@if (Model.Count == 0)
+{
+
+    <div class="jumbotron text-center">
+        <h1 class="display-4">Welcome to My Blog Website</h1>
+    </div>
+
+}
+else
+{
+    <div class="card mb-3">
+        <img src="@Model.FirstOrDefault().PostImage" height="250" class="card-img-top" alt="Image">
+        <div class="card-body">
+            <h5 class="card-title">@Model.FirstOrDefault().Title</h5>
+            <p class="card-text">
+                @if (Model.FirstOrDefault().Descritption.Length > 200)
+                {
+                    <span>
+                        @Model.FirstOrDefault().Descritption.Substring(0, 200).ToString()
+                        <a href="/BlogPosts/Details/@Model.FirstOrDefault().Id">see more...</a>
+                    </span>
+                }
+                else
+                {
+                    <span>@Model.FirstOrDefault().Descritption</span>
+                }
+            </p>
+            <p class="card-text">
+                <small class="text-muted">
+                    Last Updated @Model.FirstOrDefault().Datetime
+                </small>
+                <small class="text-muted">
+                    • By <b>@Model.FirstOrDefault().Username</b>
+                </small>
+            </p>
+        </div>
+    </div>
+
+    <h3><u>Other Posts</u></h3>
+
+    <div class="row">
+        @foreach (var item in Model.Select((value, i) => new { i, value }))
+        {
+            if (item.i != 0)
+            {
+                <div class="card" style="width: 20rem;margin-left:7px;margin-top:7px;">
+                    <img src="@item.value.PostImage" style="width:100%;height:180px" class="card-img-top" alt="Image">
+                    <div class="card-body">
+                        <h5 class="card-title">@item.value.Title</h5>
+                        <p class="card-text">
+                            @if (item.value.Descritption.Length > 75)
+                            {
+                                <span>
+                                    @item.value.Descritption.Substring(0, 75).ToString()
+                                    <a href="/BlogPosts/Details/@item.value.Id">See more...</a>
+                                </span>
+                            }
+                            else
+                            {
+                                <span>@item.value.Descritption</span>
+                            }
+                        </p>
+
+                        <p class="card-text">
+                            <small class="text-muted">
+                                Last Updated @item.value.Datetime
+                            </small><br />
+                            <small class="text-muted">
+                                • By <b>@item.value.Username</b>
+                            </small>
+                        </p>
+                    </div>
+                </div>
+            }
+
+        }
+    </div>
+}
