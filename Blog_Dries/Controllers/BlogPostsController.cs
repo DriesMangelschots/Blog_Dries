@@ -72,8 +72,7 @@ namespace Blog_Dries.Controllers
         }
 
         // POST: BlogPosts/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+ 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Title,Descritption,Category_Id,Datetime,Author,Username,PostImage")] CreatePostInterface blogPost)
@@ -135,8 +134,7 @@ namespace Blog_Dries.Controllers
         }
 
         // POST: BlogPosts/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+  
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Descritption,Category_Id,Datetime,Author,Username,PostImage")] CreatePostInterface blogPost)
